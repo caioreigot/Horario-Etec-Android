@@ -75,8 +75,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         var aulas_dia_atual = HORARIO_ETEC[diaDaSemana]
-
-        // Aula atual == -1 é INTERVALO
         var aula_atual: Int = 0
         var intervalo: Boolean = false
         var aula_pre_intervalo: Boolean = false
