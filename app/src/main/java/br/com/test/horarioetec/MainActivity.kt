@@ -59,14 +59,18 @@ class MainActivity : AppCompatActivity() {
         val diaDaSemana = (LocalDate.now().getDayOfWeek().value - 1)
 
 //        DEBUG
-//        hora_atual = 0
-//        minuto_atual = 0
+//        hora_atual = 17
+//        minuto_atual = 39
 //        diaDaSemana = 0
 
         dia_da_semana.text = DIAS[diaDaSemana]
 
         // Se for final de semana ou a aula ainda não começou/ou acabou
-        if (diaDaSemana >= 5 || hora_atual < 8 || (hora_atual >= 16 && minuto_atual > 40)) {
+        if (diaDaSemana >= 5
+            || hora_atual < 8
+            || (hora_atual >= 16 && minuto_atual > 40)
+            || hora_atual >= 17) {
+
             materia_atual.text = "NENHUMA"
             proxima_materia.text = ""
             tempo_restante.text = ""
