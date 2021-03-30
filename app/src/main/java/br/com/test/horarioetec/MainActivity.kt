@@ -59,9 +59,9 @@ class MainActivity : AppCompatActivity() {
         val diaDaSemana = (LocalDate.now().getDayOfWeek().value - 1)
 
 //        DEBUG
-//        hora_atual = 15
+//        hora_atual = 0
 //        minuto_atual = 0
-//        diaDaSemana = 4
+//        diaDaSemana = 0
 
         dia_da_semana.text = DIAS[diaDaSemana]
 
