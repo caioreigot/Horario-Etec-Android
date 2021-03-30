@@ -1,34 +1,33 @@
 package br.com.test.horarioetec
 
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     val DIAS = arrayOf(
-        "SEGUNDA",
-        "TERÇA",
-        "QUARTA",
-        "QUINTA",
-        "SEXTA",
-        "SÁBADO",
-        "DOMINGO"
+            "SEGUNDA",
+            "TERÇA",
+            "QUARTA",
+            "QUINTA",
+            "SEXTA",
+            "SÁBADO",
+            "DOMINGO"
     )
 
     val HORARIO_ETEC = arrayOf(
-        arrayOf("MAT", "FIS", "MAT", "LPL", "HIS", "HIS", "ING", "VAGA"),
-        arrayOf("VAGA", "VAGA", "LPL", "MAT", "LPL", "LPL", "PDTCC", "PDTCC"),
-        arrayOf("BIO", "GEO", "ED.FIS", "QUI", "GP", "GP", "GEO", "LE"),
-        arrayOf("VAGA", "VAGA", "ED.FIS", "GP", "GPM", "GPM", "FIS", "FIL"),
-        arrayOf("MAT", "ING", "BIO", "QUI", "LE", "GFE", "SOC", "GFE")
+            arrayOf("MAT", "FIS", "MAT", "LPL", "HIS", "HIS", "ING", "VAGA"),
+            arrayOf("VAGA", "VAGA", "LPL", "MAT", "LPL", "LPL", "PDTCC", "PDTCC"),
+            arrayOf("BIO", "GEO", "ED.FIS", "QUI", "GP", "GP", "GEO", "LE"),
+            arrayOf("VAGA", "VAGA", "ED.FIS", "GP", "GPM", "GPM", "FIS", "FIL"),
+            arrayOf("MAT", "ING", "BIO", "QUI", "LE", "GFE", "SOC", "GFE")
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         val mainHandler = Handler(Looper.getMainLooper())
 
         mainHandler.post(object : Runnable {
-            @RequiresApi(Build.VERSION_CODES.O)
             override fun run() {
                 updateScreenInfo()
                 mainHandler.postDelayed(this, 1000)
@@ -47,19 +45,18 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun updateScreenInfo() {
-        var currentDateTime: LocalDateTime = LocalDateTime.now()
-        var time: String = currentDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
+        var date = Date()
+        val dateTime = SimpleDateFormat("HH:mm").format(date)
 
         // Atualizando texto do horário
-        horario.text = time
+        horario.text = dateTime
 
-        var hora_atual = currentDateTime.hour
-        var minuto_atual = currentDateTime.minute
+        var hora_atual = SimpleDateFormat("HH").format(date).toInt()
+        var minuto_atual = SimpleDateFormat("mm").format(date).toInt()
 
         // Dia da semana em Int, com 0 sendo segunda-feira e 6 sendo domingo
-        var diaDaSemana = (currentDateTime.dayOfWeek.value - 1)
+        val diaDaSemana = (LocalDate.now().getDayOfWeek().value - 1)
 
 //        DEBUG
 //        hora_atual = 15
@@ -195,4 +192,5 @@ class MainActivity : AppCompatActivity() {
         } else
             proxima_materia.text = "PRÓXIMA: NENHUMA"
     }
+
 }
