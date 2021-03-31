@@ -1,39 +1,55 @@
 package br.com.test.horarioetec
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
+import kotlin.math.abs
+
 
 class MainActivity : AppCompatActivity() {
 
+    var currentTheme: Int = 0
+    var x1: Float = 0F
+    var x2: Float = 0F
+
     val DIAS = arrayOf(
-            "SEGUNDA",
-            "TERÇA",
-            "QUARTA",
-            "QUINTA",
-            "SEXTA",
-            "SÁBADO",
-            "DOMINGO"
+        "SEGUNDA",
+        "TERÇA",
+        "QUARTA",
+        "QUINTA",
+        "SEXTA",
+        "SÁBADO",
+        "DOMINGO"
     )
 
     val HORARIO_ETEC = arrayOf(
-            arrayOf("MAT", "FIS", "MAT", "LPL", "HIS", "HIS", "ING", "VAGA"),
-            arrayOf("VAGA", "VAGA", "LPL", "MAT", "LPL", "LPL", "PDTCC", "PDTCC"),
-            arrayOf("BIO", "GEO", "ED.FIS", "QUI", "GP", "GP", "GEO", "LE"),
-            arrayOf("VAGA", "VAGA", "ED.FIS", "GP", "GPM", "GPM", "FIS", "FIL"),
-            arrayOf("MAT", "ING", "BIO", "QUI", "LE", "GFE", "SOC", "GFE")
+        arrayOf("MAT", "FIS", "MAT", "LPL", "HIS", "HIS", "ING", "VAGA"),
+        arrayOf("VAGA", "VAGA", "LPL", "MAT", "LPL", "LPL", "PDTCC", "PDTCC"),
+        arrayOf("BIO", "GEO", "ED.FIS", "QUI", "GP", "GP", "GEO", "LE"),
+        arrayOf("VAGA", "VAGA", "ED.FIS", "GP", "GPM", "GPM", "FIS", "FIL"),
+        arrayOf("MAT", "ING", "BIO", "QUI", "LE", "GFE", "SOC", "GFE")
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
+
+        val MY_PREF = MyPreference(this)
+        var themePreferenceLoaded = MY_PREF.getThemeSelected()
+        changeTheme(themePreferenceLoaded)
+
+        if (currentTheme == AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            changeTheme(AppCompatDelegate.MODE_NIGHT_YES)
 
         val mainHandler = Handler(Looper.getMainLooper())
 
@@ -193,6 +209,46 @@ class MainActivity : AppCompatActivity() {
             }
         } else
             proxima_materia.text = "PRÓXIMA: NENHUMA"
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        val width = Resources.getSystem().getDisplayMetrics().widthPixels
+
+        // MIN_DISTANCE = 25% of Screen Width
+        val MIN_DISTANCE = (width * 0.20);
+
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> x1 = event.x
+
+            MotionEvent.ACTION_UP -> {
+                x2 = event.x
+
+                val deltaX = x2 - x1
+                if (abs(deltaX) > MIN_DISTANCE) {
+                    /*
+                    if (x2 > x1) {
+                        // Left to Right
+                        Toast.makeText(this, "Left to Right swipe [Next]", Toast.LENGTH_SHORT).show()
+                    } else // Right to Left
+                        Toast.makeText(this, "Right to Left swipe [Previous]", Toast.LENGTH_SHORT).show()
+                     */
+
+                    if (currentTheme == AppCompatDelegate.MODE_NIGHT_YES)
+                        currentTheme = AppCompatDelegate.MODE_NIGHT_NO
+                    else
+                        currentTheme = AppCompatDelegate.MODE_NIGHT_YES
+
+                    changeTheme(currentTheme)
+                }
+            }
+        }
+
+        return super.onTouchEvent(event)
+    }
+
+    private fun changeTheme(theme: Int) {
+        AppCompatDelegate.setDefaultNightMode(theme)
+        MyPreference(this).setThemeSelected(theme)
     }
 
 }
