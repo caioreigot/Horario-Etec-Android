@@ -13,7 +13,6 @@ import java.time.LocalDate
 import java.util.*
 import kotlin.math.abs
 
-
 class MainActivity : AppCompatActivity() {
 
     var currentTheme: Int = 0
@@ -74,8 +73,8 @@ class MainActivity : AppCompatActivity() {
         val diaDaSemana = (LocalDate.now().getDayOfWeek().value - 1)
 
 //        DEBUG
-//        hora_atual = 17
-//        minuto_atual = 39
+//        hora_atual = 0
+//        minuto_atual = 0
 //        diaDaSemana = 0
 
         dia_da_semana.text = DIAS[diaDaSemana]
