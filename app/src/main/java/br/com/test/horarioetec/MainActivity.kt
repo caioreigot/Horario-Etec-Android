@@ -4,7 +4,6 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -45,8 +44,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val MY_PREF = MyPreference(this)
-        var themePreferenceLoaded = MY_PREF.getThemeSelected()
-        changeTheme(themePreferenceLoaded)
+        currentTheme = MY_PREF.getThemeSelected()
+        changeTheme(currentTheme)
 
         if (currentTheme == AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             changeTheme(AppCompatDelegate.MODE_NIGHT_YES)
