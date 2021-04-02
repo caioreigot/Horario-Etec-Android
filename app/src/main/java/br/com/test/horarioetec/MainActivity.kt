@@ -15,9 +15,12 @@ import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
 
+    var dialogDisplayed = false
+    var dialogDisplayPreference = true
+
+    val DIALOG_DISPLAYED_KEY = "DDK"
+
     var currentTheme: Int = 0
-    var x1: Float = 0F
-    var x2: Float = 0F
 
     val DIAS = arrayOf(
         "SEGUNDA",
@@ -43,6 +46,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val MY_PREF = MyPreference(this)
+
+        dialogDisplayPreference = MY_PREF.getMessageDisplay()
+        dialogDisplayed = savedInstanceState?.getBoolean(DIALOG_DISPLAYED_KEY, false) == true
+        if (!dialogDisplayed && dialogDisplayPreference) {
+            val dialog: ThemeInfoDialog = ThemeInfoDialog()
+            dialog.show(supportFragmentManager, "Dialog")
+            dialogDisplayed = true
+        }
+
         currentTheme = MY_PREF.getThemeSelected()
         changeTheme(currentTheme)
 
@@ -209,6 +221,9 @@ class MainActivity : AppCompatActivity() {
             proxima_materia.text = "PRÓXIMA: NENHUMA"
     }
 
+    var x1: Float = 0F
+    var x2: Float = 0F
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val width = Resources.getSystem().getDisplayMetrics().widthPixels
 
@@ -247,6 +262,11 @@ class MainActivity : AppCompatActivity() {
     private fun changeTheme(theme: Int) {
         AppCompatDelegate.setDefaultNightMode(theme)
         MyPreference(this).setThemeSelected(theme)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(DIALOG_DISPLAYED_KEY, dialogDisplayed)
     }
 
 }
