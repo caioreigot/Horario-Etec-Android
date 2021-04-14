@@ -227,7 +227,7 @@ class MainActivity : AppCompatActivity() {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val width = Resources.getSystem().getDisplayMetrics().widthPixels
 
-        // MIN_DISTANCE = 25% of Screen Width
+        // MIN_DISTANCE = width * x% of Screen Width
         val MIN_DISTANCE = (width * 0.20);
 
         when (event.action) {
